@@ -5,5 +5,5 @@ Ye ANN model calories dataset pe train kiya gaya hai.
 **Requirements:**
 pip install pandas numpy tensorflow scikit-learn matplotlib
 
-**Run karne ka tareeka:**
+**how to Run :**
 python ann_model.py
