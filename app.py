@@ -1,36 +1,31 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from sklearn.preprocessing import StandardScaler
+# import tensorflow as tf  # Comment kar diya
+# model = tf.keras.models.load_model('model.h5')  # Comment kar diya
 
-st.title('ANN Calories Prediction Model')
+st.set_page_config(page_title="Calories Predictor", layout="centered")
 
-# Model training ka code yahan
-dataset = pd.read_csv('calories.csv')
-X = dataset.drop('Calories', axis=1)
-y = dataset['Calories']
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+st.title("🔥 Calories Burn Predictor")
+st.write("Bas details dalo, calories estimate ho jayegi")
 
-model = Sequential()
-model.add(Dense(12, activation='relu', input_dim=X_scaled.shape[1]))
-model.add(Dense(8, activation='relu'))
-model.add(Dense(1))
-model.compile(optimizer='adam', loss='mse')
-model.fit(X_scaled, y, epochs=50, verbose=0)
+# Input fields
+age = st.number_input("Age", 10, 100, 25)
+gender = st.selectbox("Gender", ["Male", "Female"])
+weight = st.number_input("Weight kg", 30.0, 200.0, 70.0)
+height = st.number_input("Height cm", 100.0, 220.0, 170.0)
+duration = st.number_input("Duration minutes", 1, 180, 30)
+heart_rate = st.number_input("Heart Rate", 60, 200, 120)
+body_temp = st.number_input("Body Temp °C", 35.0, 42.0, 37.0)
 
-st.success('Model trained!')
+if st.button("Predict Calories"):
+    # Dummy formula - tensorflow ke bina
+    calories = (weight * duration * 0.1) + (heart_rate * 0.2) - (age * 0.5)
+    if gender == "Male":
+        calories += 50
+    
+    st.success(f"🔥 Estimated Calories Burned: {calories:.0f} kcal")
+    st.info("Note: Ye dummy estimate hai. Model subha add kar denge")
 
-# User input
-st.sidebar.header('Input Data')
-age = st.sidebar.number_input('Age', 10, 100)
-weight = st.sidebar.number_input('Weight', 30, 200)
-height = st.sidebar.number_input('Height', 100, 250)
-
-if st.button('Predict Calories'):
-    input_data = scaler.transform([[age, weight, height]])
-    prediction = model.predict(input_data)
-    st.write(f'Predicted Calories: {prediction[0][0]:.2f}')
+st.write("---")
+st.caption("ANN Calories Model - Streamlit App")
